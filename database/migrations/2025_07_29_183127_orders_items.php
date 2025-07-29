@@ -16,7 +16,8 @@ return new class extends Migration
             $table->id();
             $table->integer("order_id");
             $table->integer("product_id");
-            $table->enum("status", ["pending", "paid", "shipping", "cancelled"]);
+            $table->integer("quantity");
+            $table->decimal("price");
             $table->timestamps();
 
             $table->foreign("order_id")->references("id")->on("orders");
