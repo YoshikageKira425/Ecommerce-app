@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal("price", 8, 2);
             $table->decimal("discount", 5, 2);
             $table->integer("stock");
-            $table->integer("category_id");
+            $table->integer("category_id")->nullable();
             $table->string("image", 255);
             $table->timestamps();
 

@@ -117,6 +117,6 @@
     "include": [
         "resources/js/**/*.ts",
         "resources/js/**/*.d.ts",
-        "resources/js/**/*.tsx",
+        "resources/js/**/*.tsx", "resources/js/pages/shop.tsx", "resources/js/pages/product.tsx", "resources/js/pages/welcome.tsx", "resources/js/components/product-item.tsx", "resources/js/components/nav-bar.tsx",
     ]
 }
