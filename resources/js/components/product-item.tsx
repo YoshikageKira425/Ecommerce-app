@@ -1,6 +1,6 @@
 export default function ProductItem({ product }) {
     return (
-        <div className="flex max-w-xs flex-col justify-between overflow-hidden rounded-lg bg-neutral-900 shadow-2xl">
+        <div className="flex max-w-xs flex-col justify-between overflow-hidden rounded-lg bg-neutral-800 shadow-lg shadow-neutral-900">
             <div className="px-4 py-2">
                 <h1 className="text-xl font-bold text-white uppercase">{product.name}</h1>
                 <p className="mt-1 text-sm text-neutral-400">{product.description}</p>

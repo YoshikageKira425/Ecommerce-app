@@ -17,7 +17,7 @@ export default function Shop() {
     return (
         <div className='bg-black'>
             <NavBar></NavBar>
-            <div className="flex items-center min-h-screen bg-[#0a0a0a] p-6 text-[#1b1b18] lg:justify-center dark:bg-[#FDFDFC] pt-30">
+            <div className="flex items-center min-h-screen bg-black p-6 text-[#1b1b18] lg:justify-center pt-30">
                 <div className='grid grid-cols-3 gap-4'>
                     {products.map((product) => (
                         <ProductItem key={product.id} product={product} />

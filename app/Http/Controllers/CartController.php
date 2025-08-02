@@ -11,4 +11,9 @@ class CartController extends Controller
     {
         return Inertia::render("cart");
     }
+
+    public function store()
+    {
+        
+    }
 }

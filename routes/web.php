@@ -11,6 +11,8 @@ Route::get('/', function() {return Inertia::render("home");})->name('home');
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 
+Route::post('/add-to-cart', [CartController::class, 'store'])->name('cart.store');
+
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 
 Route::get('/products/{url}', [ProductController::class, 'show'])->name('products.show');
