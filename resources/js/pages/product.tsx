@@ -1,10 +1,21 @@
 import NavBar from '@/components/nav-bar';
+import { usePage } from '@inertiajs/react';
 
-export default function Product({ product }) {
+type ProductType = {
+    image: string;
+    name: string;
+    description: string;
+    price: number;
+    discount: number;
+};
+
+export default function Product() {
+    const { product } = usePage<{ product: ProductType }>().props;
+
     return (
         <>
             <NavBar></NavBar>
-            <div className="jusitfy-between flex min-h-screen bg-[#0a0a0a] p-6 text-[#1b1b18] lg:justify-center lg:p-8 dark:bg-[#FDFDFC]">
+            <div className="jusitfy-between flex min-h-screen bg-[#0a0a0a] p-6 text-[#1b1b18] lg:justify-center dark:bg-[#FDFDFC] pt-30">
                 <div className="">
                     <img className="mt-2 w-80" src={'/' + product.image} />
                 </div>
