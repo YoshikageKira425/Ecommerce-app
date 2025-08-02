@@ -14,4 +14,9 @@ class Category extends Model
         "url_slug",
         "price"
     ];
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

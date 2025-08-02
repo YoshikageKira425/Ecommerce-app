@@ -12,9 +12,7 @@ export default function NavBar() {
         axios
             .get('/get-products')
             .then((res) => {
-                const result = res.data.filter((product: any) =>
-                    product.name.toLowerCase().includes(search.toLowerCase())
-                );
+                const result = res.data.filter((product: any) => product.name.toLowerCase().includes(search.toLowerCase()));
                 setProducts(result.slice(0, 5));
             })
             .catch((err) => console.error(err));
@@ -50,20 +48,32 @@ export default function NavBar() {
                         </a>
                     </div>
                 ) : (
-                    <a
-                        href="/login"
-                        className="rounded-sm border border-transparent px-5 py-1.5 text-lg leading-normal font-semibold text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
-                    >
-                        Log Out
-                    </a>
+                    <div className="flex flex-row">
+                        <a
+                            href="/login"
+                            className="rounded-sm border border-transparent px-5 py-1.5 text-lg leading-normal font-semibold text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
+                        >
+                            Log Out
+                        </a>
+                        <a
+                            href="/cart"
+                            className="rounded-sm border border-transparent px-5 py-1.5 text-lg leading-normal font-semibold text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
+                        >
+                            Cart
+                        </a>
+                    </div>
                 )}
             </div>
             {search && (
-                <div className="absolute top-25 w-[40%] text-black rounded shadow-lg flex flex-col gap-2 bg-neutral-800">
+                <div className="absolute top-25 flex w-[40%] flex-col gap-2 rounded bg-neutral-800 text-black shadow-lg">
                     {products.length > 0 ? (
                         products.map((product: any) => (
-                            <a href={"/products/" + product.url_slug} key={product.id} className="p-2 border-b flex items-center bg-neutral-100 hover:bg-neutral-400 ease-in-out duration-300 rounded">
-                                <img src={product.image} className='w-10' alt="" />
+                            <a
+                                href={'/products/' + product.url_slug}
+                                key={product.id}
+                                className="flex items-center rounded border-b bg-neutral-100 p-2 duration-300 ease-in-out hover:bg-neutral-400"
+                            >
+                                <img src={product.image} className="w-10" alt="" />
                                 {product.name}
                             </a>
                         ))
