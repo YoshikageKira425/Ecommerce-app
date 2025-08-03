@@ -1,4 +1,6 @@
-export default function CartElement() {
+export default function CartElement({ cartElement }) {
+    
+    
     return (
         <tr>
             <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
@@ -10,21 +12,21 @@ export default function CartElement() {
             <td className="px-12 py-4 text-sm font-medium whitespace-nowrap">
                 <div className="flex flex-row text-white">
                     <button className="border border-neutral-400 p-2 duration-300 ease-in-out hover:bg-neutral-700">-</button>
-                    <p className="border border-neutral-400 p-2 px-5">4</p>
+                    <p className="border border-neutral-400 p-2 px-5">{cartElement.quantity}</p>
                     <button className="border border-neutral-400 p-2 duration-300 ease-in-out hover:bg-neutral-700">+</button>
                 </div>
             </td>
 
             <td className="px-4 py-4 text-sm whitespace-nowrap">
                 <div>
-                    <h4 className="text-neutral-700 dark:text-neutral-200">70</h4>
+                    <h4 className="text-neutral-700 dark:text-neutral-200">{cartElement.price}</h4>
                     <p className="text-neutral-500 dark:text-neutral-400">you saved 5</p>
                 </div>
             </td>
 
             <td className="px-4 py-4 text-sm whitespace-nowrap">
                 <div>
-                    <h4 className="text-neutral-700 dark:text-neutral-200">280</h4>
+                    <h4 className="text-neutral-700 dark:text-neutral-200">{cartElement.price * cartElement.quantity}</h4>
                 </div>
             </td>
 

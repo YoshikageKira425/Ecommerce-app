@@ -1,7 +1,21 @@
-import NavBar from '@/components/nav-bar';
 import CartElement from '@/components/cart-element';
+import NavBar from '@/components/nav-bar';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 export default function Cart() {
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        axios
+            .get('/get-carts-items')
+            .then((res) => {
+                setProducts(res.data);
+                console.log(res.data);  
+            })
+            .catch((err) => console.error(err));
+    }, []);
+
     return (
         <>
             <NavBar></NavBar>
@@ -58,7 +72,9 @@ export default function Cart() {
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-neutral-200 bg-white dark:divide-neutral-700 dark:bg-neutral-900">
-                                            <CartElement></CartElement>
+                                            {products.map((product, i) => (
+                                                <CartElement key={i} cartElement={product} />
+                                            ))}
                                         </tbody>
                                     </table>
                                 </div>
