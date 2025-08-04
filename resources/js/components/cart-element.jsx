@@ -1,37 +1,92 @@
-export default function CartElement({ cartElement }) {
-    
-    
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+
+export default function CartElement({ cartElement, deleteItself }) {
+    const [product, setProduct] = useState([]);
+    const [quantity, setQuantity] = useState(0);
+
+    useEffect(() => {
+        axios
+            .get('/get-product', {
+                params: { product_id: cartElement.product_id },
+            })
+            .then((res) => {
+                setProduct(res.data);
+                setQuantity(cartElement.quantity);
+            })
+            .catch((err) => console.error(err));
+    }, []);
+
+    const raiseQuantity = () => {
+        if (quantity < product.stock) 
+            setQuantity(quantity + 1);
+
+        axios.post('/add-to-cart', { product_id: product.id, quantity: 1 });
+    };
+
+    const deincreaseQuantity = () => {
+        if (quantity > 0) 
+            setQuantity(quantity - 1);
+
+        if (quantity == 0)
+            deleteItself();
+
+        axios.post('/remove-from-cart', {
+            _method: 'DELETE',
+            product_id: product.id,
+            quantity: 1,
+        });
+    };
+
+    const deleteTheProduct = () => {
+        deleteItself();
+
+        axios.post('/remove-from-cart', {
+            _method: 'DELETE',
+            product_id: product.id,
+            quantity: quantity,
+        });
+    };
+
     return (
         <tr>
             <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
                 <div>
-                    <h2 className="font-medium text-neutral-800 dark:text-white">Catalog</h2>
+                    <h2 className="font-medium text-neutral-800 dark:text-white">{product.name}</h2>
                 </div>
             </td>
 
             <td className="px-12 py-4 text-sm font-medium whitespace-nowrap">
                 <div className="flex flex-row text-white">
-                    <button className="border border-neutral-400 p-2 duration-300 ease-in-out hover:bg-neutral-700">-</button>
-                    <p className="border border-neutral-400 p-2 px-5">{cartElement.quantity}</p>
-                    <button className="border border-neutral-400 p-2 duration-300 ease-in-out hover:bg-neutral-700">+</button>
+                    <button onClick={deincreaseQuantity} className="border border-neutral-400 p-2 duration-300 ease-in-out hover:bg-neutral-700">
+                        -
+                    </button>
+                    <p className="border border-neutral-400 p-2 px-5">{quantity}</p>
+                    <button onClick={raiseQuantity} className="border border-neutral-400 p-2 duration-300 ease-in-out hover:bg-neutral-700">
+                        +
+                    </button>
                 </div>
             </td>
 
             <td className="px-4 py-4 text-sm whitespace-nowrap">
                 <div>
-                    <h4 className="text-neutral-700 dark:text-neutral-200">{cartElement.price}</h4>
-                    <p className="text-neutral-500 dark:text-neutral-400">you saved 5</p>
+                    <h4 className="text-neutral-700 dark:text-neutral-200">
+                        {(cartElement.price - cartElement.price * (product.discount / 100)).toFixed(2)}
+                    </h4>
+                    <p className="text-neutral-500 dark:text-neutral-400">You saved {(cartElement.price * (product.discount / 100)).toFixed(2)}</p>
                 </div>
             </td>
 
             <td className="px-4 py-4 text-sm whitespace-nowrap">
                 <div>
-                    <h4 className="text-neutral-700 dark:text-neutral-200">{cartElement.price * cartElement.quantity}</h4>
+                    <h4 className="text-neutral-700 dark:text-neutral-200">
+                        {((cartElement.price - cartElement.price * (product.discount / 100)) * cartElement.quantity).toFixed(2)}
+                    </h4>
                 </div>
             </td>
 
             <td className="px-4 py-4 text-sm whitespace-nowrap">
-                <button className="rounded-lg px-1 py-1 text-gray-500 transition-colors duration-200 hover:bg-gray-100 dark:text-gray-300">
+                <button onClick={deleteTheProduct} className="rounded-lg px-1 py-1 text-gray-500 transition-colors duration-200 hover:bg-gray-100 dark:text-gray-300">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" className="w-8">
                         <path
                             fill="gray"

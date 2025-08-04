@@ -10,42 +10,16 @@ type ProductType = {
     description: string;
     price: number;
     discount: number;
+    stock: number;
 };
 
 export default function Product() {
     const { product } = usePage<{ product: ProductType }>().props;
-    const [inCart, setInCart] = useState(false);
-
-    useEffect(() => {
-        axios
-            .get('/get-cart-product', {
-                params: { product_id: product.id },
-            })
-            .then((res) => {
-                console.log(res.data);
-                setInCart(!!res.data && res.data.some((item) => item.product_id === product.id));
-            })
-            .catch((err) => console.error(err));
-    }, []);
+    const [quantity, setQuantity] = useState(0);
 
     const handleAddToCart = async (e: MouseEvent<HTMLButtonElement>) => {
         try {
-            await axios.post('/add-to-cart', { product_id: product.id, quantity: 1 });
-            setInCart(true);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const handleRemoveToCart = async (e: MouseEvent<HTMLButtonElement>) => {
-        try {
-            await axios.delete('/remove-from-cart', {
-                data: {
-                    product_id: product.id,
-                    quantity: 1,
-                },
-            });
-            setInCart(false);
+            await axios.post('/add-to-cart', { product_id: product.id, quantity: quantity });
         } catch (error) {
             console.log(error);
         }
@@ -54,7 +28,7 @@ export default function Product() {
     return (
         <>
             <NavBar></NavBar>
-            <div className="jusitfy-between flex min-h-screen bg-black p-6 pt-30 text-white lg:justify-center">
+            <div className="jusitfy-between mx-10 flex min-h-screen bg-black p-6 pt-35 text-white lg:justify-center">
                 <div className="">
                     <img className="mt-2 w-80" src={'/' + product.image} />
                 </div>
@@ -64,26 +38,22 @@ export default function Product() {
                     <div className="mt-4 mb-4 flex flex-col">
                         <div className="flex">
                             {product.discount > 0 && <p className="mr-3 text-2xl font-bold text-red-500">-{product.discount}%</p>}
-                            <p className="text-2xl font-bold text-white">{Math.round(product.price - product.price * (product.discount / 100))}</p>
+                            <p className="text-2xl font-bold text-white">{(product.price - product.price * (product.discount / 100)).toFixed(2)}</p>
                         </div>
                         <p className="text-base text-neutral-100">Base {product.price}</p>
                     </div>
                     <div className="flex justify-end gap-3">
-                        {inCart ? (
-                            <button
-                                onClick={handleRemoveToCart}
-                                className="transform rounded bg-red-600 px-3 py-2 text-base font-semibold text-white uppercase transition-colors duration-300 hover:bg-red-800 focus:bg-neutral-400 focus:outline-none"
-                            >
-                                Remove from cart
-                            </button>
-                        ) : (
-                            <button
-                                onClick={handleAddToCart}
-                                className="transform rounded bg-white px-3 py-2 text-base font-semibold text-black uppercase transition-colors duration-300 hover:bg-neutral-500 focus:bg-neutral-400 focus:outline-none"
-                            >
-                                Add to cart
-                            </button>
-                        )}
+                        <div className="flex flex-row text-white">
+                            <button onClick={() => { if (quantity > 0) setQuantity(quantity - 1); }} className="border border-neutral-400 p-2 duration-300 ease-in-out hover:bg-neutral-700">-</button>
+                            <p className="border border-neutral-400 p-2 px-5">{quantity}</p>
+                            <button onClick={() => { if (quantity < product.stock) setQuantity(quantity + 1); }} className="border border-neutral-400 p-2 duration-300 ease-in-out hover:bg-neutral-700">+</button>
+                        </div>
+                        <button
+                            onClick={handleAddToCart}
+                            className="transform rounded bg-white px-3 py-2 text-base font-semibold text-black uppercase transition-colors duration-300 hover:bg-neutral-500 focus:bg-neutral-400 focus:outline-none"
+                        >
+                            Add to cart
+                        </button>
                     </div>
                 </div>
             </div>

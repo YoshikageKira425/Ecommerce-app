@@ -11,10 +11,20 @@ export default function Cart() {
             .get('/get-carts-items')
             .then((res) => {
                 setProducts(res.data);
-                console.log(res.data);  
             })
             .catch((err) => console.error(err));
     }, []);
+
+    const handleDelete = (productId: number) => {
+        setProducts((prev) => prev.filter((item) => item.product_id !== productId));
+    };
+
+    const emptyCart = () => {
+        setProducts([]);
+        axios.post('/empty-cart', {
+            _method: 'DELETE',
+        });
+    };
 
     return (
         <>
@@ -60,7 +70,10 @@ export default function Cart() {
                                                     scope="col"
                                                     className="px-4 py-3.5 text-left text-sm font-normal text-neutral-500 rtl:text-right dark:text-neutral-400"
                                                 >
-                                                    <button className="rounded-lg px-1 py-1 text-gray-500 transition-colors duration-200 hover:bg-gray-100 dark:text-gray-300">
+                                                    <button
+                                                        onClick={emptyCart}
+                                                        className="rounded-lg px-1 py-1 text-gray-500 transition-colors duration-200 hover:bg-gray-100 dark:text-gray-300"
+                                                    >
                                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" className="w-8">
                                                             <path
                                                                 fill="gray"
@@ -73,7 +86,7 @@ export default function Cart() {
                                         </thead>
                                         <tbody className="divide-y divide-neutral-200 bg-white dark:divide-neutral-700 dark:bg-neutral-900">
                                             {products.map((product, i) => (
-                                                <CartElement key={i} cartElement={product} />
+                                                <CartElement key={i} cartElement={product} deleteItself={() => handleDelete(product.product_id)} />
                                             ))}
                                         </tbody>
                                     </table>

@@ -25,6 +25,7 @@ class CartController extends Controller
         $user = Auth::user();
         $quantity = $request->input('quantity', 1);
         $productId = $request->input('product_id');
+        $maxQuanitity = \App\Models\Product::findOrFail($productId)->stock;
         $price = \App\Models\Product::findOrFail($productId)->price;
 
         $cart = Cart::firstOrCreate(['user_id' => $user->id]);
@@ -34,8 +35,10 @@ class CartController extends Controller
             ->first();
 
         if ($item) {
-            $item->quantity += $quantity;
-            $item->save();
+            if ($item->quantity + $quantity <= $maxQuanitity) {
+                $item->quantity += $quantity;
+                $item->save();
+            }
         } else {
             CartItem::create([
                 'cart_id' => $cart->id,
@@ -48,7 +51,7 @@ class CartController extends Controller
         return redirect()->back()->with('success', 'Item added to cart!');
     }
 
-    public function destroy(Request $request)
+    public function removeFromCart(Request $request)
     {
         $request->validate([
             'product_id' => 'required|integer|exists:products,id',
@@ -81,5 +84,16 @@ class CartController extends Controller
         }
 
         return redirect()->back()->with('success', 'Item removed from cart.');
+    }
+
+    public function emptyCart()
+    {
+        $user = Auth::user();
+
+        $cart = Cart::where('user_id', $user->id)->first();
+
+        CartItem::where('cart_id', $cart->id)->delete();
+
+        return redirect()->back()->with('success', 'The cart is empty.');
     }
 }
