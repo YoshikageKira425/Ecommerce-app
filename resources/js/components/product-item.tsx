@@ -1,17 +1,37 @@
 export default function ProductItem({ product }) {
+    const finalPrice = (product.price - product.price * (product.discount / 100)).toFixed(2);
+
     return (
-        <a href={`/products/${product.url_slug}`} className="flex max-w-xs flex-col border-2 border-neutral-600 justify-between overflow-hidden rounded-lg bg-neutral-800">
-            <img className="w-80" src={product.image} />
+        <a
+            href={`/products/${product.url_slug}`}
+            className="flex flex-col justify-between overflow-hidden rounded-xl bg-neutral-800 shadow-md transition-transform hover:scale-105"
+        >
+            <img
+                src={product.image}
+                alt={product.name}
+                className="w-full h-64 object-cover"
+            />
 
-            <h1 className="text-xl px-2 text-center font-bold text-white uppercase">{product.name}</h1>
+            <div className="px-4 py-4">
+                <h2 className="text-lg font-semibold text-white uppercase text-center mb-2">
+                    {product.name}
+                </h2>
 
-            <div className="flex items-center justify-between px-4 py-2">
-                <div className="flex">
-                    <p className="text-lg p-1 font-bold text-white">{(product.price - product.price * (product.discount / 100)).toFixed(2)}</p>
-                    {product.discount > 0 && <p className="ml-3 p-1 rounded bg-red-300 text-lg font-bold text-red-500">-{product.discount}%</p>}
+                <div className="flex items-center justify-center gap-3 mb-1">
+                    <span className="text-xl font-bold text-white">€{finalPrice}</span>
+                    {product.discount > 0 && (
+                        <span className="text-sm font-semibold text-red-500 bg-red-200 px-2 py-0.5 rounded">
+                            -{product.discount}%
+                        </span>
+                    )}
                 </div>
+
+                {product.discount > 0 && (
+                    <p className="text-center text-sm text-gray-400 line-through">
+                        €{product.price}
+                    </p>
+                )}
             </div>
-            {product.discount > 0 && <p className="text-base px-5 mb-2 font-bold text-neutral-400 line-through">{product.price}</p> }
         </a>
     );
 }

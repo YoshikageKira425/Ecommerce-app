@@ -15,13 +15,20 @@ export default function Shop() {
     const { products } = usePage<{ products: ProductType[] }>().props;
 
     return (
-        <div className='bg-black'>
-            <NavBar></NavBar>
-            <div className="flex items-center min-h-screen bg-black p-6 text-[#1b1b18] lg:justify-center pt-30">
-                <div className='grid grid-cols-3 gap-4'>
-                    {products.map((product) => (
-                        <ProductItem key={product.id} product={product} />
-                    ))}
+        <div className="relative bg-white dark:bg-black min-h-screen">
+            <div className="relative z-10">
+                <div className="container mx-auto px-4 py-10">
+                    <NavBar />
+
+                    <h1 className="text-3xl font-semibold text-gray-800 dark:text-white mt-10 mb-6">
+                        Shop All Products
+                    </h1>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {products.map((product) => (
+                            <ProductItem key={product.id} product={product} />
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
