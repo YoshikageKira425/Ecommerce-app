@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -53,6 +54,10 @@ Route::get('/get-cart-product', function () {
 
 Route::get('/get-product', function () {
     return Product::firstWhere('id', request()->product_id);
+});
+
+Route::get('/get-categories', function () {
+    return Category::all();
 });
 
 require __DIR__ . '/settings.php';

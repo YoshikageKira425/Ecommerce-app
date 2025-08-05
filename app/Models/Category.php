@@ -10,9 +10,7 @@ class Category extends Model
     protected $primaryKey = "id";
 
     protected $fillable = [
-        "description",
-        "url_slug",
-        "price"
+        "category"
     ];
 
     public function products()

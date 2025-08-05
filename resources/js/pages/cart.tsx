@@ -50,13 +50,13 @@ export default function Cart() {
                                         <th className="px-4 py-3 text-left text-sm font-medium text-neutral-600 dark:text-neutral-300">
                                             <button
                                                 onClick={emptyCart}
-                                                className="rounded p-2 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition"
+                                                className="rounded p-2 bg-blue-600 hover:bg-blue-500 transition"
                                                 title="Empty Cart"
                                             >
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     viewBox="0 0 640 640"
-                                                    className="w-6 h-6 fill-neutral-500"
+                                                    className="w-6 h-6 fill-white"
                                                 >
                                                     <path d="M232.7 69.9L224 96H128C110.3 96 96 110.3 96 128s14.3 32 32 32h384c17.7 0 32-14.3 32-32s-14.3-32-32-32h-96l-8.7-26.1C402.9 56.8 390.7 48 376.9 48H263.1c-13.8 0-26 8.8-30.4 21.9zM512 208H128l21.1 323.1C150.7 556.4 171.7 576 197 576h246c25.3 0 46.3-19.6 47.9-44.9L512 208z" />
                                                 </svg>

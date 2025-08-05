@@ -65,14 +65,14 @@ export default function Product() {
                                         <div className="flex items-center gap-2">
                                             <button
                                                 onClick={() => quantity > 0 && setQuantity(quantity - 1)}
-                                                className="rounded bg-gray-200 px-3 py-1 hover:bg-gray-300 dark:bg-neutral-700 dark:hover:bg-neutral-600"
+                                                className="rounded bg-blue-600 px-3 py-1 hover:bg-blue-500"
                                             >
                                                 -
                                             </button>
                                             <span className="rounded border px-4 py-1 text-gray-800 dark:text-white">{quantity}</span>
                                             <button
                                                 onClick={() => quantity < product.stock && setQuantity(quantity + 1)}
-                                                className="rounded bg-gray-200 px-3 py-1 hover:bg-gray-300 dark:bg-neutral-700 dark:hover:bg-neutral-600"
+                                                className="rounded bg-blue-600 px-3 py-1 hover:bg-blue-500"
                                             >
                                                 +
                                             </button>
