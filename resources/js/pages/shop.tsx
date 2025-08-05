@@ -13,6 +13,7 @@ type ProductType = {
 
 export default function Shop() {
     const { products } = usePage<{ products: ProductType[] }>().props;
+    console.log(products);
 
     return (
         <div className="relative bg-white dark:bg-black min-h-screen">

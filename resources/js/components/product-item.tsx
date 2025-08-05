@@ -7,7 +7,7 @@ export default function ProductItem({ product }) {
             className="flex flex-col justify-between overflow-hidden rounded-xl bg-neutral-800 shadow-md transition-transform hover:scale-105"
         >
             <img
-                src={product.image}
+                src={"/" + product.image}
                 alt={product.name}
                 className="w-full h-64 object-cover"
             />

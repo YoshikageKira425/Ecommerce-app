@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Models\Cart;
 use App\Models\CartItem;
@@ -23,6 +24,8 @@ Route::delete('/empty-cart', [CartController::class, 'emptyCart'])->name('cart.d
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 
 Route::get('/products/{url}', [ProductController::class, 'show'])->name('products.show');
+
+Route::get('/category/{url}', [CategoryController::class, 'index'])->name('category.index');
 
 Route::post('/products', [ProductController::class, "store"]);
 
