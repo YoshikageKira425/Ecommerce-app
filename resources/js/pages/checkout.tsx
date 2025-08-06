@@ -1,7 +1,11 @@
 import LightRays from '@/components/light-rays';
 import NavBar from '@/components/nav-bar';
+import ErrorList from '@/components/errors-list';
+import { usePage } from '@inertiajs/react';
 
 export default function Checkout() {
+    const { errors } = usePage().props;
+
     return (
         <div className="relative">
             <div className="container relative z-10 mx-auto px-4 py-10">
@@ -9,10 +13,14 @@ export default function Checkout() {
 
                 <div className="flex justify-center mt-12">
                     <form
-                        action="finished-checkout"
+                        action="/finished-checkout" method='post'
                         className="w-full max-w-lg space-y-6 rounded-xl border border-neutral-700 bg-neutral-900 p-8 shadow-lg"
                     >
+                        <input type="hidden" name="_token" value={usePage().props.csrf_token} />
+                        
                         <h2 className="text-2xl font-bold text-center text-white">Checkout Details</h2>
+
+                        <ErrorList errors={Object.values(errors)} />
 
                         <div className="flex flex-col">
                             <label htmlFor="phone_number" className="mb-1 text-sm font-semibold text-neutral-300">

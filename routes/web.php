@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Category;
+use App\Models\Order;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -17,9 +18,13 @@ Route::get('/', function() {return Inertia::render("home");})->name('home');
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 
-Route::get('/checkout', [OrderController::class, 'index'])->name('order.index');
+Route::get('/checkout', [OrderController::class, 'checkout'])->name('order.checkout');
+
+Route::get('/orders', [OrderController::class, 'index'])->name('order.index');
 
 Route::post('/finished-checkout', [OrderController::class, 'store'])->name('order.store');
+
+Route::get('/get-orders', function() {return Order::all(); })->name('order.get');
 
 Route::post('/add-to-cart', [CartController::class, 'store'])->name('cart.store');
 
