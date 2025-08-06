@@ -52,12 +52,12 @@ export default function NavBar() {
                 <div className="flex space-x-4">
                     {!auth.user ? (
                         <>
-                            <a href="/register" className="rounded-md bg-blue-600 px-5 py-2 font-semibold text-white transition hover:bg-blue-700">
+                            <a href="/register" className="rounded-md bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700">
                                 Sign up
                             </a>
                             <a
                                 href="/login"
-                                className="rounded-md border border-blue-600 px-5 py-2 font-semibold text-blue-600 transition hover:bg-blue-600 hover:text-white"
+                                className="rounded-md border border-blue-600 px-5 py-3 font-semibold text-blue-600 transition hover:bg-blue-600 hover:text-white"
                             >
                                 Log In
                             </a>
@@ -66,7 +66,7 @@ export default function NavBar() {
                         <>
                             <a
                                 href="/logout"
-                                className="rounded-md border border-gray-600 px-5 py-2 font-semibold text-gray-300 transition hover:bg-gray-700"
+                                className="rounded-md border border-gray-600 px-5 py-3 font-semibold text-gray-300 transition hover:bg-gray-700"
                             >
                                 Log Out
                             </a>
@@ -83,6 +83,12 @@ export default function NavBar() {
                                 {count > 0 && (
                                     <span className="absolute top-3 right-8 h-6 w-6 rounded-full bg-blue-500 text-center text-white">{count}</span>
                                 )}
+                            </a>
+                            <a
+                                href="/orders"
+                                className="rounded-md border border-gray-600 px-5 py-3 font-semibold text-gray-300 transition hover:bg-gray-700"
+                            >
+                                Orders
                             </a>
                         </>
                     )}
