@@ -19,7 +19,7 @@ export default function Home() {
                 />
             </div>
 
-            <div className="container relative z-10 px-3 py-16 mx-auto">
+            <div className="container relative z-10 px-3 py-10 mx-auto">
                 <NavBar />
 
                 <div className="items-center lg:flex">

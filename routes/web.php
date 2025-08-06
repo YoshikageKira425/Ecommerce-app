@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Models\Cart;
 use App\Models\CartItem;
@@ -15,6 +16,10 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', function() {return Inertia::render("home");})->name('home');
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+
+Route::get('/checkout', [OrderController::class, 'index'])->name('order.index');
+
+Route::post('/finished-checkout', [OrderController::class, 'store'])->name('order.store');
 
 Route::post('/add-to-cart', [CartController::class, 'store'])->name('cart.store');
 

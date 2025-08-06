@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer("product_id");
             $table->integer("quantity");
             $table->decimal("price");
+            $table->decimal("discount");
             $table->timestamps();
 
             $table->foreign("cart_id")->references("id")->on("carts");

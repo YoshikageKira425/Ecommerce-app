@@ -2,7 +2,7 @@ import NavBar from '@/components/nav-bar';
 import { type SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
 import axios from 'axios';
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 
 type ProductType = {
     id: number;
@@ -17,13 +17,32 @@ type ProductType = {
 export default function Product() {
     const { product } = usePage<{ product: ProductType }>().props;
     const [quantity, setQuantity] = useState(0);
+    const [cartQuantity, setCartQuantity] = useState(0);
     const { auth } = usePage<SharedData>().props;
+    
+    useEffect(() => {
+        axios
+            .get('/get-cart-product', { params: { product_id: product.id } })
+            .then((res) => {
+                const productInCart = res.data[0];
+                if (productInCart) {
+                    setCartQuantity(productInCart.quantity);
+                } else {
+                    setCartQuantity(0); 
+                }
+            })
+            .catch((err) => console.error(err));
+    }, []);
 
     const handleAddToCart = async (e: MouseEvent<HTMLButtonElement>) => {
-        try {
-            await axios.post('/add-to-cart', { product_id: product.id, quantity: quantity });
-        } catch (error) {
-            console.error(error);
+        if (quantity > 0) {
+            try {
+                await axios.post('/add-to-cart', { product_id: product.id, quantity: quantity });
+                alert('Product added to cart!');
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+                alert('Failed to add product to cart.');
+            }
         }
     };
 
@@ -69,7 +88,7 @@ export default function Product() {
                                             >
                                                 -
                                             </button>
-                                            <span className="rounded border px-4 py-1 text-gray-800 dark:text-white">{quantity}</span>
+                                            <span className="rounded border px-4 py-1 text-gray-800 dark:text-white">{quantity + cartQuantity}</span>
                                             <button
                                                 onClick={() => quantity < product.stock && setQuantity(quantity + 1)}
                                                 className="rounded bg-blue-600 px-3 py-1 hover:bg-blue-500"

@@ -27,6 +27,7 @@ class CartController extends Controller
         $productId = $request->input('product_id');
         $maxQuanitity = \App\Models\Product::findOrFail($productId)->stock;
         $price = \App\Models\Product::findOrFail($productId)->price;
+        $discount = \App\Models\Product::findOrFail($productId)->discount;
 
         $cart = Cart::firstOrCreate(['user_id' => $user->id]);
 
@@ -44,6 +45,7 @@ class CartController extends Controller
                 'cart_id' => $cart->id,
                 'product_id' => $productId,
                 'quantity' => $quantity,
+                'discount' => $discount,
                 'price' => $price,
             ]);
         }

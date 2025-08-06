@@ -16,6 +16,9 @@ return new class extends Migration
             $table->id();
             $table->integer("user_id");
             $table->decimal("total_price", 12);
+            $table->string("phone_number", 14);
+            $table->string("city", 255);
+            $table->string("street", 255);
             $table->enum("status", ["pending", "paid", "shipping", "cancelled"]);
             $table->timestamps();
 
