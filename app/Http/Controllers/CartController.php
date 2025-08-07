@@ -53,15 +53,13 @@ class CartController extends Controller
         return redirect()->back()->with('success', 'Item added to cart!');
     }
 
-    public function removeFromCart(Request $request)
+    public function removeFromCart(string $product_id, Request $request)
     {
         $request->validate([
-            'product_id' => 'required|integer|exists:products,id',
             'quantity' => 'nullable|integer|min:1'
         ]);
 
         $user = Auth::user();
-        $productId = $request->input('product_id');
         $quantity = $request->input('quantity', 1);
 
         $cart = Cart::where('user_id', $user->id)->first();
@@ -71,7 +69,7 @@ class CartController extends Controller
         }
 
         $item = CartItem::where('cart_id', $cart->id)
-            ->where('product_id', $productId)
+            ->where('product_id', $product_id)
             ->first();
 
         if (!$item) {
@@ -97,5 +95,24 @@ class CartController extends Controller
         CartItem::where('cart_id', $cart->id)->delete();
 
         return redirect()->back()->with('success', 'The cart is empty.');
+    }
+
+    public function getCartItems()
+    {
+        $cart = Cart::firstWhere('user_id', Auth::id());
+        if ($cart) {
+            return response()->json($cart->items);
+        }
+        return response()->json([]);
+    }
+
+    public function getCartProduct()
+    {
+        $cart = Cart::firstWhere('user_id', Auth::id());
+        if ($cart && request()->has('product_id')) {
+            $cartItem = $cart->items->where('product_id', request('product_id'))->first();
+            return response()->json($cartItem);
+        }
+        return response()->json(null);
     }
 }

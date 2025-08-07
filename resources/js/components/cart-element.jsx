@@ -27,7 +27,7 @@ export default function CartElement({ cartElement, deleteItself, setPrice }) {
             setQuantity((q) => q + 1);
             setPrice((p) => p + unitPrice);
 
-            axios.post('/add-to-cart', { product_id: product.id, quantity: 1 });
+            axios.post('/cart', { product_id: product.id, quantity: 1 });
         }
     };
 
@@ -36,7 +36,7 @@ export default function CartElement({ cartElement, deleteItself, setPrice }) {
             setQuantity((q) => q - 1);
             setPrice((p) => p - unitPrice);
 
-            axios.post('/remove-from-cart', {
+            axios.post(`/cart/${product.id}`, {
                 _method: 'DELETE',
                 product_id: product.id,
                 quantity: 1,

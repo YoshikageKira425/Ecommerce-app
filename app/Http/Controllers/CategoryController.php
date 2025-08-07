@@ -14,4 +14,9 @@ class CategoryController extends Controller
             "products" => Category::firstWhere("category", $category)->products ?? []
         ]);
     }
+
+    public function getCategories()
+    {
+        return Category::all();
+    }
 }

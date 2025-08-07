@@ -4,17 +4,19 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 export default function NavBar() {
-    const { auth } = usePage<SharedData>().props;
+    const { auth, csrf_token } = usePage<SharedData>().props;
     const [search, setSearch] = useState('');
     const [products, setProducts] = useState([]);
 
     const [count, setCount] = useState(0);
 
     useEffect(() => {
-        axios
-            .get('/get-carts-items')
-            .then((res) => setCount(res.data.length))
-            .catch((err) => console.error(err));
+        if (auth.user) {
+            axios
+                .get('/get-cart-product')
+                .then((res) => setCount(res.data.length))
+                .catch((err) => console.error(err));
+        }
     }, []);
 
     useEffect(() => {
@@ -24,13 +26,17 @@ export default function NavBar() {
         }
 
         axios
-            .get('/get-products')
+            .get('/get-products', { params: {"_token": csrf_token} })
             .then((res) => {
                 const filtered = res.data.filter((product: any) => product.name.toLowerCase().includes(search.toLowerCase()));
                 setProducts(filtered.slice(0, 5));
             })
             .catch(console.error);
     }, [search]);
+
+    const logOut = () => {
+        axios.post('/logout');
+    };
 
     return (
         <nav className="relative w-full text-white">
@@ -64,12 +70,12 @@ export default function NavBar() {
                         </>
                     ) : (
                         <>
-                            <a
-                                href="/logout"
+                            <button
+                                onClick={logOut}
                                 className="rounded-md border border-gray-600 px-5 py-3 font-semibold text-gray-300 transition hover:bg-gray-700"
                             >
                                 Log Out
-                            </a>
+                            </button>
                             <a
                                 href="/cart"
                                 className="rounded-md border border-gray-600 px-5 py-2 font-semibold text-gray-300 transition hover:bg-gray-700"

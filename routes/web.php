@@ -4,70 +4,39 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
-use App\Models\Cart;
-use App\Models\CartItem;
-use App\Models\Category;
-use App\Models\Order;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-use App\Models\Product;
-use Illuminate\Support\Facades\Auth;
+// Basic Routes
+Route::get('/', function() {
+    return Inertia::render("home");
+})->name('home');
 
-Route::get('/', function() {return Inertia::render("home");})->name('home');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/checkout', [OrderController::class, 'checkout'])->name('order.checkout');
+    Route::post('/finished-checkout', [OrderController::class, 'store'])->name('order.store');
+    Route::resource('orders', OrderController::class)->only(['index']);
 
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::prefix('cart')->name('cart.')->group(function () {
+        Route::get('/', [CartController::class, 'index'])->name('index');
+        Route::post('/', [CartController::class, 'store'])->name('store');
+        Route::delete('/{product_id}', [CartController::class, 'removeFromCart'])->name('destroy');
+        Route::delete('/', [CartController::class, 'emptyCart'])->name('empty');
+    });
 
-Route::get('/checkout', [OrderController::class, 'checkout'])->name('order.checkout');
-
-Route::get('/orders', [OrderController::class, 'index'])->name('order.index');
-
-Route::post('/finished-checkout', [OrderController::class, 'store'])->name('order.store');
-
-Route::get('/get-orders', function() {return Order::all(); })->name('order.get');
-
-Route::post('/add-to-cart', [CartController::class, 'store'])->name('cart.store');
-
-Route::delete('/remove-from-cart', [CartController::class, 'removeFromCart'])->name('cart.destroy');
-
-Route::delete('/empty-cart', [CartController::class, 'emptyCart'])->name('cart.destroy');
-
-Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-
-Route::get('/products/{url}', [ProductController::class, 'show'])->name('products.show');
-
-Route::get('/category/{url}', [CategoryController::class, 'index'])->name('category.index');
-
-Route::post('/products', [ProductController::class, "store"]);
-
-Route::get('/get-products', function () {
-    return Product::all();
+    Route::get('/get-carts-items', [CartController::class, 'getCartItems'])->name('api.cart.items');
+    Route::get('/get-cart-product', [CartController::class, 'getCartProduct'])->name('api.cart.product');
+    Route::get('/get-product', [ProductController::class, 'getProduct'])->name('api.product.get');
 });
+
+
+Route::resource('products', ProductController::class)->only(['index', 'show']);
+Route::resource('categories', CategoryController::class)->only(['index', 'show']);
+Route::get('/get-categories', [CategoryController::class, 'getCategories'])->name('api.categories.get');
+Route::get('/get-products', [ProductController::class, 'getProducts'])->name('api.products.get');
 
 Route::get('/csrf-token', function () {
     return response()->json(['csrf_token' => csrf_token()]);
-});
-
-Route::get('/get-carts-items', function () {
-    $cart = Cart::firstWhere('user_id', Auth::id());
-    if ($cart) {
-        return $cart->items;
-    }
-});
-
-Route::get('/get-cart-product', function () {
-    $cart = Cart::firstWhere('user_id', Auth::id());
-    if ($cart) {
-        return $cart->items->where('cart_id', $cart->id)->where('product_id', request()->product_id);
-    }
-});
-
-Route::get('/get-product', function () {
-    return Product::firstWhere('id', request()->product_id);
-});
-
-Route::get('/get-categories', function () {
-    return Category::all();
 });
 
 require __DIR__ . '/settings.php';
