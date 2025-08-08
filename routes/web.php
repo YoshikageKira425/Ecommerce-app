@@ -7,7 +7,6 @@ use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-// Basic Routes
 Route::get('/', function() {
     return Inertia::render("home");
 })->name('home');
@@ -39,5 +38,4 @@ Route::get('/csrf-token', function () {
     return response()->json(['csrf_token' => csrf_token()]);
 });
 
-require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';

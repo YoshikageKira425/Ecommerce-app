@@ -59,7 +59,7 @@ export default function Product() {
 
                     <div className="mt-10 flex flex-col items-center justify-between gap-10 lg:flex-row">
                         <div className="flex w-full justify-center lg:w-1/2">
-                            <img src={`/${product.image}`} alt={product.name} className="w-full max-w-md rounded-xl shadow-lg" />
+                            <img src={`http://localhost:8000/storage/${product.image}`} alt={product.name} className="w-full max-w-md rounded-xl shadow-lg" />
                         </div>
 
                         <div className="w-full lg:w-1/2">
