@@ -25,14 +25,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/get-carts-items', [CartController::class, 'getCartItems'])->name('api.cart.items');
     Route::get('/get-cart-product', [CartController::class, 'getCartProduct'])->name('api.cart.product');
-    Route::get('/get-product', [ProductController::class, 'getProduct'])->name('api.product.get');
 });
-
 
 Route::resource('products', ProductController::class)->only(['index', 'show']);
 Route::resource('categories', CategoryController::class)->only(['index', 'show']);
 Route::get('/get-categories', [CategoryController::class, 'getCategories'])->name('api.categories.get');
-Route::get('/get-products', [ProductController::class, 'getProducts'])->name('api.products.get');
+Route::get('/get-all-products', [ProductController::class, 'getAllProducts'])->name('api.products.get');
+Route::get('/get-product', [ProductController::class, 'getProduct'])->name('api.product.get');
 
 Route::get('/csrf-token', function () {
     return response()->json(['csrf_token' => csrf_token()]);

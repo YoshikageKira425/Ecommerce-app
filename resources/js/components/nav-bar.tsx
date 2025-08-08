@@ -26,7 +26,7 @@ export default function NavBar() {
         }
 
         axios
-            .get('/get-products', { params: {"_token": csrf_token} })
+            .get('/get-all-products', { params: {"_token": csrf_token} })
             .then((res) => {
                 const filtered = res.data.filter((product: any) => product.name.toLowerCase().includes(search.toLowerCase()));
                 setProducts(filtered.slice(0, 5));

@@ -24,8 +24,13 @@ class ProductController extends Controller
         ]);
     }
 
-    public function getProducts()
+    public function getAllProducts()
     {
         return response()->json(Product::all());
+    }
+
+    public function getProduct()
+    {
+        return Product::firstWhere('id', request()->product_id);
     }
 }

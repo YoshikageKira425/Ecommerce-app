@@ -43,8 +43,14 @@ class OrderResource extends Resource
                             $productName = $item->product->name;
                             $quantity = $item->quantity;
                             $unitPrice = $item->price; 
+                            $discount = $item->discount; 
 
-                            return "{$quantity} x {$productName} @ \${$unitPrice}";
+                            $discountText = "";
+
+                            if ($discount != 0)
+                                $discountText = " %{$discount}";
+
+                            return "{$quantity} x {$productName} @ \${$unitPrice}" . $discountText;
                         });
 
                         // Use implode to join the strings with a <br> tag for new lines
