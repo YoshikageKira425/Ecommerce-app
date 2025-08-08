@@ -26,9 +26,9 @@ class OrderResource extends Resource
                 Forms\Components\Select::make('status')
                     ->options([
                         'pending' => 'Pending',
-                        'processing' => 'Processing',
-                        'completed' => 'Completed',
-                        'canceled' => 'Canceled',
+                        'shipping' => 'Shipping',
+                        'paid' => 'Paid',
+                        'cancelled' => 'Canceled',
                     ])
                     ->required(),
                 Forms\Components\Placeholder::make('total_price')
@@ -42,8 +42,8 @@ class OrderResource extends Resource
                         $items = $record->items->map(function ($item) {
                             $productName = $item->product->name;
                             $quantity = $item->quantity;
-                            $unitPrice = $item->price; 
-                            $discount = $item->discount; 
+                            $unitPrice = $item->price;
+                            $discount = $item->discount;
 
                             $discountText = "";
 
@@ -53,7 +53,6 @@ class OrderResource extends Resource
                             return "{$quantity} x {$productName} @ \${$unitPrice}" . $discountText;
                         });
 
-                        // Use implode to join the strings with a <br> tag for new lines
                         return $items->implode('<br>');
                     })
                     ->label('Ordered Products')
@@ -73,7 +72,13 @@ class OrderResource extends Resource
                     ->money('EUR')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\TextColumn::make('status')->color(fn (string $state): string => match ($state) {
+                    'pending' => 'info',
+                    'shipping' => 'info',
+                    'paid' => 'success',
+                    'cancelled' => 'danger',
+                })
+                ->sortable(),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->date()
