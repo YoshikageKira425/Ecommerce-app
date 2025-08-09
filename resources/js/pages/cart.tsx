@@ -19,7 +19,7 @@ export default function Cart() {
 
     const emptyCart = () => {
         setProducts([]);
-        axios.post('/empty-cart', {
+        axios.post('/cart', {
             _method: 'DELETE',
         });
     };

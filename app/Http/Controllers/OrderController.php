@@ -74,6 +74,7 @@ class OrderController extends Controller
             ]);
 
             $item->delete();
+            $item->product->decrement('stock', $item->quantity);
         }
 
         return redirect()->route('order.index', $order);

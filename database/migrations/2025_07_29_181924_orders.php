@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string("phone_number", 14);
             $table->string("city", 255);
             $table->string("street", 255);
-            $table->enum("status", ["pending", "paid", "shipping", "cancelled"]);
+            $table->enum("status", ["shipping", "delivered", "canceled"]);
             $table->timestamps();
 
             $table->foreign("user_id")->references("id")->on("users");

@@ -41,18 +41,14 @@ export default function CartElement({ cartElement, deleteItself, setPrice }) {
                 product_id: product.id,
                 quantity: 1,
             });
-        } else if (quantity === 1) {
-            deleteTheProduct();
-            setPrice((p) => p - totalPrice);
-        }
+        } 
     };
 
     const deleteTheProduct = () => {
         deleteItself();
         setPrice((p) => p - totalPrice);
-        axios.post('/remove-from-cart', {
+        axios.post(`/cart/${product.id}`, {
             _method: 'DELETE',
-            product_id: product.id,
             quantity,
         });
     };

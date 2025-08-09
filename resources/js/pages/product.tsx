@@ -37,7 +37,7 @@ export default function Product() {
     const handleAddToCart = async (e: MouseEvent<HTMLButtonElement>) => {
         if (quantity > 0) {
             try {
-                await axios.post('/add-to-cart', { product_id: product.id, quantity: quantity });
+                await axios.post('/cart', { product_id: product.id, quantity: quantity });
                 alert('Product added to cart!');
             } catch (error) {
                 console.error('Error adding to cart:', error);

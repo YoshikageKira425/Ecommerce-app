@@ -12,9 +12,9 @@ Route::get('/', function() {
 })->name('home');
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/orders', [OrderController::class, 'index'])->name('order.index');
     Route::get('/checkout', [OrderController::class, 'checkout'])->name('order.checkout');
     Route::post('/finished-checkout', [OrderController::class, 'store'])->name('order.store');
-    Route::resource('orders', OrderController::class)->only(['index']);
 
     Route::prefix('cart')->name('cart.')->group(function () {
         Route::get('/', [CartController::class, 'index'])->name('index');

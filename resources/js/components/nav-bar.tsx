@@ -13,7 +13,7 @@ export default function NavBar() {
     useEffect(() => {
         if (auth.user) {
             axios
-                .get('/get-cart-product')
+                .get('/get-carts-items')
                 .then((res) => setCount(res.data.length))
                 .catch((err) => console.error(err));
         }
@@ -87,7 +87,7 @@ export default function NavBar() {
                                     />
                                 </svg>
                                 {count > 0 && (
-                                    <span className="absolute top-3 right-8 h-6 w-6 rounded-full bg-blue-500 text-center text-white">{count}</span>
+                                    <span className="absolute top-3 right-36 h-6 w-6 rounded-full bg-blue-500 text-center text-white">{count}</span>
                                 )}
                             </a>
                             <a
