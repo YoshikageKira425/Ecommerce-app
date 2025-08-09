@@ -18,10 +18,9 @@ class OrderChart extends ChartWidget
             ->pluck('count', 'status'); 
 
         $backgroundColors = [
-            'pending' => '#FFC107',   
             'shipping' => '#36A2EB',   
-            'paid' => '#4CAF50', 
-            'cancelledgit' => '#F44336',  
+            'delivered' => '#4CAF50', 
+            'canceled' => '#F44336' 
         ];
 
         return [

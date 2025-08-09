@@ -27,7 +27,8 @@ class ProductFactory extends Factory
             "discount" => fake()->randomFloat(2, 1, 99),
             "stock" => fake()->numberBetween(1, 100),
             "category_id" => null,
-            "image" => "images/image.png"
+            "image" => "images/image.png",
+            "category_id" => fake()->numberBetween(1, 10)
         ];
     }
 }

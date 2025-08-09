@@ -1,30 +1,44 @@
 import CartElement from '@/components/cart-element';
 import NavBar from '@/components/nav-bar';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 export default function Cart() {
     const [products, setProducts] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         axios
             .get('/get-carts-items')
             .then((res) => setProducts(res.data))
-            .catch((err) => console.error(err));
+            .catch((err) => console.error('Failed to fetch cart items:', err))
+            .finally(() => setIsLoading(false));
     }, []);
+
+    const totalPrice = useMemo(() => {
+        return products.reduce((total, item) => total + item.price * item.amount, 0);
+    }, [products]);
 
     const handleDelete = (productId: number) => {
         setProducts((prev) => prev.filter((item) => item.product_id !== productId));
+
+        axios.post('/cart/delete', { _method: 'DELETE', product_id: productId }).catch((err) => {
+            console.error('Failed to delete item. Reverting UI.', err);
+        });
     };
 
     const emptyCart = () => {
         setProducts([]);
-        axios.post('/cart', {
-            _method: 'DELETE',
-        });
+        axios.post('/cart', { _method: 'DELETE' }).catch((err) => console.error('Failed to empty cart.', err));
     };
 
-    const [totalPrice, setTotalPrice] = useState(0);
+    if (isLoading) {
+        return (
+            <div className="p-10 text-center">
+                <img src="./images/loading.gif" loading="lazy" alt="" />
+            </div>
+        );
+    }
 
     return (
         <div className="relative min-h-screen bg-white dark:bg-black">
@@ -85,8 +99,10 @@ export default function Cart() {
                         </div>
 
                         {products.length > 0 && (
-                            <div className='w-full flex justify-end mt-7'>
-                                <a href='/checkout' className="rounded border border-blue-600 px-3 py-1 transition hover:bg-blue-500">Checkout</a>
+                            <div className="mt-7 flex w-full justify-end">
+                                <a href="/checkout" className="rounded border border-blue-600 px-3 py-1 transition hover:bg-blue-500">
+                                    Checkout
+                                </a>
                             </div>
                         )}
                     </div>

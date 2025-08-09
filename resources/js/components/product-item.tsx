@@ -8,7 +8,7 @@ export default function ProductItem({ product }) {
         >
             <img
                 src={`http://localhost:8000/storage/${product.image}`}
-                alt={product.name}
+                alt={product.name} 
                 className="w-full h-64 object-cover"
             />
 

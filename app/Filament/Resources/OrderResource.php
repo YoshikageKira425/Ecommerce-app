@@ -25,10 +25,9 @@ class OrderResource extends Resource
             ->schema([
                 Forms\Components\Select::make('status')
                     ->options([
-                        'pending' => 'Pending',
                         'shipping' => 'Shipping',
-                        'paid' => 'Paid',
-                        'cancelled' => 'Canceled',
+                        'delivered' => 'Delivered',
+                        'canceled' => 'Canceled'
                     ])
                     ->required(),
                 Forms\Components\Placeholder::make('total_price')

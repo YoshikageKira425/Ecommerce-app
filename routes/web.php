@@ -28,7 +28,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::resource('products', ProductController::class)->only(['index', 'show']);
-Route::resource('categories', CategoryController::class)->only(['index', 'show']);
+Route::get('/categories/{category}', [CategoryController::class, "index"]);
 Route::get('/get-categories', [CategoryController::class, 'getCategories'])->name('api.categories.get');
 Route::get('/get-all-products', [ProductController::class, 'getAllProducts'])->name('api.products.get');
 Route::get('/get-product', [ProductController::class, 'getProduct'])->name('api.product.get');
