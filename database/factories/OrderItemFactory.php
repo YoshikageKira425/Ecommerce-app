@@ -17,10 +17,10 @@ class OrderItemFactory extends Factory
      */
     public function definition(): array
     {
-        $product_id = fake()->randomNumber(1, 30);
-        $quantity = fake()->randomNumber(1, 5);
+        $product_id = fake()->numberBetween(1, 30);
+        $quantity = fake()->numberBetween(1, 5);
 
-        $product = Product::where("id", $product_id);
+        $product = Product::firstWhere("id", $product_id);
 
         $price = $product->price;
         $discount = $product->discount;
