@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -20,7 +21,8 @@ class ProductController extends Controller
         $product = Product::where("url_slug", $url)->firstOrFail();
 
         return Inertia::render("product", [
-            "product" => $product
+            "product" => $product,
+            "category" => Category::firstWhere("id", $product->category_id)->category
         ]);
     }
 

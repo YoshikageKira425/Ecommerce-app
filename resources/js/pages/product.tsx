@@ -16,10 +16,11 @@ type ProductType = {
 
 export default function Product() {
     const { product } = usePage<{ product: ProductType }>().props;
+    const { category } = usePage<{ category: string }>().props;
     const [quantity, setQuantity] = useState(0);
     const [cartQuantity, setCartQuantity] = useState(0);
     const { auth } = usePage<SharedData>().props;
-    
+
     useEffect(() => {
         axios
             .get('/get-cart-product', { params: { product_id: product.id } })
@@ -28,7 +29,7 @@ export default function Product() {
                 if (productInCart) {
                     setCartQuantity(productInCart.quantity);
                 } else {
-                    setCartQuantity(0); 
+                    setCartQuantity(0);
                 }
             })
             .catch((err) => console.error(err));
@@ -59,11 +60,17 @@ export default function Product() {
 
                     <div className="mt-10 flex flex-col items-center justify-between gap-10 lg:flex-row">
                         <div className="flex w-full justify-center lg:w-1/2">
-                            <img src={`http://localhost:8000/storage/${product.image}`} alt={product.name} className="w-full max-w-md rounded-xl shadow-lg" />
+                            <img
+                                src={`http://localhost:8000/storage/${product.image}`}
+                                alt={product.name}
+                                className="w-full max-w-md rounded-xl shadow-lg"
+                            />
                         </div>
 
                         <div className="w-full lg:w-1/2">
-                            <h2 className="mb-4 text-3xl font-semibold text-gray-800 lg:text-4xl dark:text-white">{product.name}</h2>
+                            <h2 className="mb-4 text-3xl font-semibold text-gray-800 lg:text-4xl dark:text-white">
+                                {product.name} - Category: {category}
+                            </h2>
 
                             <p className="mb-6 text-gray-600 dark:text-gray-400">{product.description}</p>
 
@@ -106,7 +113,7 @@ export default function Product() {
                                     </button>
                                 </>
                             ) : (
-                                <div className='flex space-x-4'>
+                                <div className="flex space-x-4">
                                     <a
                                         href="/register"
                                         className="rounded-md bg-blue-600 px-5 py-2 font-semibold text-white transition hover:bg-blue-700"
