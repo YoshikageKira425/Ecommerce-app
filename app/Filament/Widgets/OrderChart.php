@@ -2,9 +2,9 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Order; // <-- Make sure to import your model
+use App\Models\Order;
 use Filament\Widgets\ChartWidget;
-use Illuminate\Support\Facades\DB; // <-- Import the DB facade
+use Illuminate\Support\Facades\DB;
 
 class OrderChart extends ChartWidget
 {
@@ -15,20 +15,20 @@ class OrderChart extends ChartWidget
         $data = Order::query()
             ->select('status', DB::raw('count(*) as count'))
             ->groupBy('status')
-            ->pluck('count', 'status'); 
+            ->pluck('count', 'status');
 
         $backgroundColors = [
-            'shipping' => '#36A2EB',   
-            'delivered' => '#4CAF50', 
-            'canceled' => '#F44336' 
+            'shipping' => '#36A2EB',
+            'delivered' => '#4CAF50',
+            'canceled' => '#F44336'
         ];
 
         return [
             'datasets' => [
                 [
-                    'label' => 'Orders', 
+                    'label' => 'Orders',
                     'data' => $data->values()->toArray(),
-                    'backgroundColor' => $data->keys()->map(fn ($status) => $backgroundColors[$status] ?? '#9BD0F5')->toArray(),
+                    'backgroundColor' => $data->keys()->map(fn($status) => $backgroundColors[$status] ?? '#9BD0F5')->toArray(),
                 ],
             ],
             'labels' => $data->keys()->toArray(),

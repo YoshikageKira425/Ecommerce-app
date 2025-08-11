@@ -36,7 +36,7 @@ class ProductResource extends Resource
                     ->required()
                     ->maxLength(255)
                     ->live(onBlur: true)
-                    ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('url_slug', Str::slug($state)) : null),
+                    ->afterStateUpdated(fn(string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('url_slug', Str::slug($state)) : null),
 
                 Forms\Components\TextInput::make('url_slug')
                     ->required()
@@ -68,11 +68,16 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('image')
-                    ->width(50) 
+                    ->width(50)
                     ->height(50),
 
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+
+                Tables\Columns\TextColumn::make('category.category')
+                    ->label('Category')
+                    ->searchable()
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('price')
                     ->money('EUR')
