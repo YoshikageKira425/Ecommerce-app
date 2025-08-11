@@ -8,10 +8,21 @@ use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
-    public function index($category)
+    public function index(Request $request, string $category)
     {
+        $categoryModel = Category::firstWhere("category", $category);
+
+        if (!$categoryModel) {
+            return Inertia::render("shop", [
+                "products" => [],
+                "categoryName" => $category,
+            ]);
+        }
+
+        $products = $categoryModel->products()->paginate(9);
+
         return Inertia::render("shop", [
-            "products" => Category::firstWhere("category", $category)->products ?? []
+            "products" => $products
         ]);
     }
 

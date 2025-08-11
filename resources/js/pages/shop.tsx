@@ -62,7 +62,7 @@ export default function Shop() {
                                 <div className="py-2">
                                     {categories.map((category, index) => (
                                         <a
-                                            href={`/categories/${category.category}`}
+                                            href={`/categories/${category.category}?page=1`}
                                             key={index}
                                             className="mx-2 flex transform items-center rounded-md border-b border-b-2 border-blue-700 px-4 py-3 transition-colors duration-300 hover:bg-blue-500"
                                         >
