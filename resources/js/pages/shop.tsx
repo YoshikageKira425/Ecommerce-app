@@ -75,7 +75,22 @@ export default function Shop() {
                     </div>
 
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        {products && products.map((product) => <ProductItem key={product.id} product={product} />)}
+                        {products && products.data.map((product) => <ProductItem key={product.id} product={product} />)}
+                    </div>
+
+                    <div className="mt-10 flex justify-center">
+                        {products.links.map((link, index) => (
+                            <a
+                                key={index}
+                                href={link.url}
+                                className={`mx-1 transform rounded-md px-4 py-2 transition-colors duration-300 ${
+                                    link.active
+                                        ? 'bg-blue-500 text-white dark:bg-blue-500 dark:text-neutral-200'
+                                        : 'bg-white text-neutral-700 hover:bg-blue-500 hover:text-white dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-blue-500 dark:hover:text-neutral-200'
+                                } ${!link.url ? 'pointer-events-none opacity-50' : ''} ${link.label.includes('Previous') || link.label.includes('Next') ? 'hidden sm:inline-flex' : 'hidden sm:inline'} `}
+                                dangerouslySetInnerHTML={{ __html: link.label }}
+                            />
+                        ))}
                     </div>
                 </div>
             </div>

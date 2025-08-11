@@ -11,8 +11,12 @@ class ProductController extends Controller
 {
     public function index()
     {
+        $page = request()->query('page', 1) ?? 1;
+
+        $products = Product::paginate(9, ['*'], 'page', $page);
+
         return Inertia::render("shop", [
-            "products" => Product::all()
+            "products" => $products
         ]);
     }
 
