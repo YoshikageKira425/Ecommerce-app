@@ -71,13 +71,12 @@ class OrderResource extends Resource
                     ->money('EUR')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('status')->color(fn (string $state): string => match ($state) {
-                    'pending' => 'info',
+                Tables\Columns\TextColumn::make('status')->color(fn(string $state): string => match ($state) {
                     'shipping' => 'info',
-                    'paid' => 'success',
-                    'cancelled' => 'danger',
+                    'delivered' => 'success',
+                    'canceled' => 'danger',
                 })
-                ->sortable(),
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->date()

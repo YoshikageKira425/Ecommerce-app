@@ -11,8 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create("orders", function(Blueprint $table)
-        {
+        Schema::create("orders", function (Blueprint $table) {
             $table->id();
             $table->integer("user_id");
             $table->decimal("total_price", 12);
@@ -22,7 +21,9 @@ return new class extends Migration
             $table->enum("status", ["shipping", "delivered", "canceled"]);
             $table->timestamps();
 
-            $table->foreign("user_id")->references("id")->on("users");
+            $table->foreign("user_id")->references("id")->on("users")->onDelete("cascade");
+
+            $table->index(["user_id"]);
         });
     }
 

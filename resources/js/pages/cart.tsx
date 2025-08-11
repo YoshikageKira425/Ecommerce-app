@@ -5,14 +5,12 @@ import { useEffect, useMemo, useState } from 'react';
 
 export default function Cart() {
     const [products, setProducts] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         axios
             .get('/get-carts-items')
             .then((res) => setProducts(res.data))
-            .catch((err) => console.error('Failed to fetch cart items:', err))
-            .finally(() => setIsLoading(false));
+            .catch((err) => console.error('Failed to fetch cart items:', err));
     }, []);
 
     const totalPrice = useMemo(() => {
@@ -31,14 +29,6 @@ export default function Cart() {
         setProducts([]);
         axios.post('/cart', { _method: 'DELETE' }).catch((err) => console.error('Failed to empty cart.', err));
     };
-
-    if (isLoading) {
-        return (
-            <div className="p-10 text-center">
-                <img src="./images/loading.gif" loading="lazy" alt="" />
-            </div>
-        );
-    }
 
     return (
         <div className="relative min-h-screen bg-white dark:bg-black">

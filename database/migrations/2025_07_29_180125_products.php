@@ -11,8 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create("products", function(Blueprint $table)
-        {
+        Schema::create("products", function (Blueprint $table) {
             $table->id();
             $table->string("name", 255);
             $table->string("url_slug", 255);
@@ -24,7 +23,9 @@ return new class extends Migration
             $table->string("image", 255);
             $table->timestamps();
 
-            $table->foreign('category_id')->references('id')->on('categories');
+            $table->index(['category_id', "name", "url_slug"]);
+
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete("cascade");
         });
     }
 

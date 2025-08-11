@@ -31,9 +31,10 @@ class CartController extends Controller
 
         $cart = Cart::firstOrCreate(['user_id' => $user->id]);
 
-        $item = CartItem::where('cart_id', $cart->id)
-            ->where('product_id', $productId)
-            ->first();
+        $item = CartItem::firstWhere([
+            'cart_id'    => $cart->id,
+            'product_id' => $productId
+        ]);
 
         if ($item) {
             if ($item->quantity + $quantity <= $maxQuanitity) {
@@ -68,9 +69,10 @@ class CartController extends Controller
             return redirect()->back()->with('error', 'Cart not found.');
         }
 
-        $item = CartItem::where('cart_id', $cart->id)
-            ->where('product_id', $product_id)
-            ->first();
+        $item = CartItem::firstWhere([
+            'cart_id'    => $cart->id,
+            'product_id' => $product_id
+        ]);
 
         if (!$item) {
             return redirect()->back()->with('error', 'Item not found in cart.');
