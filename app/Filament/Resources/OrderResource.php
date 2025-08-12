@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -83,7 +84,12 @@ class OrderResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                //
+                SelectFilter::make("status")
+                    ->options([
+                        "shipping" => "Shipping",
+                        "delivered" => "Delivered",
+                        "canceled" => "Canceled"
+                    ])
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
+use App\Models\Category;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -15,6 +16,14 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Select;
+use Filament\Support\Enums\MaxWidth;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\QueryBuilder;
+use Filament\Tables\Filters\QueryBuilder\Constraints\NumberConstraint;
+use Filament\Tables\Filters\SelectFilter;
 
 class ProductResource extends Resource
 {
@@ -32,32 +41,37 @@ class ProductResource extends Resource
                     ->disk('public')
                     ->directory('images/products'),
 
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
                     ->required()
                     ->maxLength(255)
                     ->live(onBlur: true)
                     ->afterStateUpdated(fn(string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('url_slug', Str::slug($state)) : null),
 
-                Forms\Components\TextInput::make('url_slug')
+                TextInput::make('url_slug')
                     ->required()
                     ->maxLength(255)
                     ->unique(ignoreRecord: true),
 
-                Forms\Components\Textarea::make('description')
+                Select::make('category_id')
+                    ->options(Category::all()->pluck("category", "id"))
+                    ->placeholder('Select a category')
+                    ->label("Chose Category:"),
+
+                Textarea::make('description')
                     ->maxLength(65535)
                     ->columnSpan('full'),
 
-                Forms\Components\TextInput::make('price')
+                TextInput::make('price')
                     ->numeric()
                     ->prefix('€')
                     ->required(),
 
-                Forms\Components\TextInput::make('discount')
+                TextInput::make('discount')
                     ->numeric()
                     ->prefix('%')
                     ->required(),
 
-                Forms\Components\TextInput::make('stock')
+                TextInput::make('stock')
                     ->numeric()
                     ->required(),
             ]);
@@ -71,28 +85,38 @@ class ProductResource extends Resource
                     ->width(50)
                     ->height(50),
 
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('category.category')
+                TextColumn::make('category.category')
                     ->label('Category')
-                    ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('price')
+                TextColumn::make('price')
                     ->money('EUR')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('discount')
+                TextColumn::make('discount')
                     ->prefix("%")
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('stock')
+                TextColumn::make('stock')
                     ->sortable(),
             ])
             ->filters([
-                //
+                SelectFilter::make("category_id")
+                    ->placeholder('Select a category')
+                    ->label("Chose Category:")
+                    ->options(Category::all()->pluck("category", "id")),
+
+                QueryBuilder::make()
+                    ->constraints([
+                        NumberConstraint::make('stock'),
+                        NumberConstraint::make('price'),
+                        NumberConstraint::make('discount'),
+                    ]),
             ])
+            ->filtersFormWidth(MaxWidth::FourExtraLarge)
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
